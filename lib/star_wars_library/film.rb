@@ -1,5 +1,6 @@
 class Film
-    attr_accessor :title, :episode_id
+    attr_accessor :title, :episode_id, :opening_crawl, 
+    :director, :producer, :release_date
     @@all = []
     def initialize(title, episode_id)
         @title = title
