@@ -10,7 +10,6 @@ class Cli
         print_all
         episode_prompt
         episode_id = valid_id?(selection)
-        #binding.pry
         updated_film = get_film_details(episode_id)
         print_details(updated_film)
         print_continue
@@ -39,7 +38,7 @@ class Cli
     end
 
     def print_continue
-        puts "Would you like to earn about another film? (y/n)"
+        puts "Would you like to learn about another film? (y/n)"
     end
 
     def episode_prompt

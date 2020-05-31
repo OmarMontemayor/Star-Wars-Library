@@ -1,6 +1,5 @@
 class Film
-    attr_accessor :title, :episode_id, :opening_crawl, 
-    :director, :producer, :release_date, :url
+    attr_accessor :title, :episode_id, :url, :opening_crawl, :director, :producer, :release_date
     @@all = []
     def initialize(title, episode_id, url)
         @title = title
@@ -22,9 +21,9 @@ class Film
         self.opening_crawl = opening_crawl
         self.director = director
         self.producer = producer
-        self.release_date = release_date
+        self.release_date = release_date 
     end
-    
+
     def self.all
         @@all
     end
