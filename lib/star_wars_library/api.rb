@@ -8,13 +8,21 @@ class Api
         data['results'].each do |film|
             title = film['title']
             episode_id = film['episode_id']
-            Film.new(title, episode_id) 
+            url = film['url']
+            Film.new(title, episode_id, url) 
         end
     end
 
-    def self.get_details_by_id(episode_id)
-        response = RestClient.get(BASE_URL + "films/" + "#{episode_id}/")
+    def self.get_film_details_by_number(episode_id)
+        puts "getting details!"
+        selected_film = Film.find_by_id(episode_id)
+        response = RestClient.get(selected_film.url)
         data = JSON.parse(response.body)
-        binding.pry
+        opening_crawl = data['opening_crawl']
+        director = data['director']
+        producer = data['producer']
+        release_date = data['release_date']
+        selected_film.update(opening_crawl, director, producer, release_date)
+        selected_film
     end
 end

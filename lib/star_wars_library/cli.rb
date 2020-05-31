@@ -8,13 +8,17 @@ class Cli
 
     def main
         print_all
-        selection_prompt
+        episode_prompt
         episode_id = valid_id?(selection)
-        get_film_details(episode_id)
+        #binding.pry
+        updated_film = get_film_details(episode_id)
+        print_details(updated_film)
+        print_continue
+        continue?(selection)
     end
 
     def print_all
-        list = Film.all.sort { |a, b| a.episode_id <=> b.episode_id}
+        list = Film.all.sort! { |a, b| a.episode_id <=> b.episode_id}
         list.each { |f| puts "#{f.episode_id}. #{f.title}"}
     end
 
@@ -22,7 +26,23 @@ class Cli
         puts "We don't have information on that yet. Please try again."
     end
 
-    def selection_prompt
+    def print_details(film)
+        puts "Title: #{film.title}"
+        sleep 0.5
+        puts "Director: #{film.director}"
+        sleep 0.5
+        puts "Producer: #{film.producer}"
+        sleep 0.5
+        puts "Release Date: #{film.release_date}\n\n"
+        sleep 0.5
+        puts "#{film.opening_crawl}"
+    end
+
+    def print_continue
+        puts "Would you like to earn about another film? (y/n)"
+    end
+
+    def episode_prompt
         puts "Please select a film by number to learn more about!"
     end
 
@@ -40,11 +60,28 @@ class Cli
         episode_id
     end
 
+    def continue?(choice)
+        if choice == 'y'
+            main
+        else
+            print_goodbye
+            exit
+        end
+    end
+
     def get_film_details(episode_id)
-        Api.get_details_by_id(episode_id)
+        selected_film = Film.find_by_id(episode_id)
+        unless  selected_film.has_details?
+            Api.get_film_details_by_number(episode_id)
+        end
+        selected_film
     end
 
     def welcome
         puts "Welcome to Star Wars Library!"
+    end
+
+    def print_goodbye
+        puts "Goodbye and may the force be with you!"
     end
 end
